@@ -25,7 +25,7 @@ def create_agent():
     credential = DefaultAzureCredential()
     client = AIProjectClient(endpoint=PROJECT_ENDPOINT, credential=credential)
 
-    # Build the MCPTool pointing to the Skills MCP Server
+    # Build the MCPTool pointing to the Skills MCP Server via APIM
     mcp_tool = MCPTool(
         server_label="skills_mcp",
         server_url=MCP_SERVER_URL,
