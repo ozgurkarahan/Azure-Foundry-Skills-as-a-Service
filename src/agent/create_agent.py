@@ -30,6 +30,7 @@ def create_agent():
         server_label="skills_mcp",
         server_url=MCP_SERVER_URL,
         require_approval="never",
+        project_connection_id="skills-mcp-obo",
     )
 
     # Create the agent definition
