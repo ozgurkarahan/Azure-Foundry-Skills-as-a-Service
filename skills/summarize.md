@@ -1,3 +1,10 @@
+---
+name: summarize
+version: "1.0"
+tags: [text-processing, productivity]
+dependencies: []
+---
+
 # Skill: Summarize
 
 ## Purpose
@@ -28,6 +35,9 @@ Write a concise paragraph (3-5 sentences) covering the main points.
 - **Context:** one sentence on what this is about
 - **Key findings:** 3-5 bullet points
 - **Recommendation / Next steps:** what should happen next
+
+## Dependencies
+- If the user asks for a summary of translated content, first use the **Translate** skill, then summarize the result.
 
 ## Rules
 - Never add information not present in the source

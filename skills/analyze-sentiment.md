@@ -1,3 +1,10 @@
+---
+name: analyze-sentiment
+version: "1.0"
+tags: [analysis, feedback, nlp]
+dependencies: []
+---
+
 # Skill: Analyze Sentiment
 
 ## Purpose
@@ -30,6 +37,9 @@ Analyze the sentiment, emotional tone, and key themes in text such as reviews, f
 - {theme 2} — brief context
 
 **Summary:** One-sentence interpretation of the overall sentiment and its implications.
+
+## Dependencies
+- If the input text is not in English, first use the **Translate** skill to translate it to English, then analyze the translated text. Include a note that the analysis was performed on translated text.
 
 ## Rules
 - Always cite specific phrases from the text as evidence

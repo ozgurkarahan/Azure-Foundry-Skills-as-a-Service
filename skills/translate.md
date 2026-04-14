@@ -1,3 +1,10 @@
+---
+name: translate
+version: "1.0"
+tags: [language, localization]
+dependencies: []
+---
+
 # Skill: Translate
 
 ## Purpose

@@ -15,11 +15,16 @@ from src.agent.system_prompt import SYSTEM_PROMPT
 from src.agent.upload_skills import get_blob_uri
 
 
-def create_vector_store(client: AIProjectClient, store_name: str = "skills-store") -> str:
+def create_vector_store(client: AIProjectClient, store_name: str = "skills-store", force_recreate: bool = False) -> str:
     """Create a vector store and upload skill files to it.
 
-    Uses the OpenAI files API to upload each skill file,
-    then creates a vector store containing all files.
+    Uploads only skill files (excludes registry.md since registry
+    is embedded in the system prompt).
+
+    Args:
+        client: AIProjectClient instance.
+        store_name: Name for the vector store.
+        force_recreate: If True, delete existing store and recreate.
 
     Returns:
         vector store ID.
@@ -30,16 +35,23 @@ def create_vector_store(client: AIProjectClient, store_name: str = "skills-store
     existing_stores = openai.vector_stores.list()
     for store in existing_stores:
         if store.name == store_name:
-            print(f"Found existing vector store: {store.id} ({store.name})")
-            return store.id
+            if force_recreate:
+                print(f"Deleting existing vector store: {store.id}")
+                openai.vector_stores.delete(store.id)
+                break
+            else:
+                print(f"Found existing vector store: {store.id} ({store.name})")
+                return store.id
 
-    # Upload skill files via OpenAI files API
+    # Upload skill files via OpenAI files API (exclude registry.md)
     import os
     import glob
     from src.agent.config import SKILLS_DIR
 
     skills_path = os.path.abspath(SKILLS_DIR)
     md_files = glob.glob(os.path.join(skills_path, "**", "*.md"), recursive=True)
+    # Exclude registry.md — it's embedded in the system prompt
+    md_files = [f for f in md_files if os.path.basename(f) != "registry.md"]
 
     file_ids = []
     for filepath in md_files:
@@ -48,7 +60,7 @@ def create_vector_store(client: AIProjectClient, store_name: str = "skills-store
             file_ids.append(uploaded.id)
             print(f"  Uploaded file: {os.path.basename(filepath)} -> {uploaded.id}")
 
-    # Create vector store with all files
+    # Create vector store with skill files only
     vector_store = openai.vector_stores.create(
         name=store_name,
         file_ids=file_ids,
@@ -68,19 +80,20 @@ def create_vector_store(client: AIProjectClient, store_name: str = "skills-store
     return vector_store.id
 
 
-def create_agent(vector_store_id: str = None):
+def create_agent(vector_store_id: str = None, force_recreate: bool = False):
     """Create or update the Foundry Skills prompt agent.
 
     Args:
         vector_store_id: ID of the vector store containing skill files.
                          If None, creates one from local skill files.
+        force_recreate: If True, recreate the vector store from scratch.
     """
     credential = DefaultAzureCredential()
     client = AIProjectClient(endpoint=PROJECT_ENDPOINT, credential=credential)
 
     # Create vector store if not provided
     if not vector_store_id:
-        vector_store_id = create_vector_store(client)
+        vector_store_id = create_vector_store(client, force_recreate=force_recreate)
 
     # Build the FileSearchTool
     file_search_tool = FileSearchTool(vector_store_ids=[vector_store_id])
@@ -116,4 +129,6 @@ def create_agent(vector_store_id: str = None):
 
 
 if __name__ == "__main__":
-    create_agent()
+    import sys
+    force = "--force" in sys.argv
+    create_agent(force_recreate=force)
