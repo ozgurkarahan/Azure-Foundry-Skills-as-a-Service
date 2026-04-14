@@ -16,7 +16,7 @@ from src.agent.system_prompt import SYSTEM_PROMPT
 # MCP server URL (Container App)
 MCP_SERVER_URL = os.environ.get(
     "MCP_SERVER_URL",
-    "https://ca-skills-mcp.greenrock-9f8cee2b.swedencentral.azurecontainerapps.io/mcp",
+    "https://apim-sf-mcp-obo.azure-api.net/skills-mcp/mcp",
 )
 
 
