@@ -1,0 +1,22 @@
+name: foundry-skills
+metadata:
+  template: foundry-skills
+
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+services:
+  skills-mcp:
+    host: containerapp
+    project: .
+    docker:
+      path: Dockerfile
+
+hooks:
+  postprovision:
+    shell: sh
+    run: python scripts/postprovision.py
+    interactive: false
+    continueOnError: false
