@@ -7,7 +7,7 @@ param location string
 param modelName string = 'gpt-4o'
 param modelVersion string = '2024-11-20'
 
-resource account 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
+resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   name: accountName
   location: location
   kind: 'AIServices'
@@ -17,6 +17,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   properties: {
     customSubDomainName: accountName
     publicNetworkAccess: 'Enabled'
+    allowProjectManagement: true
   }
 }
 

@@ -58,6 +58,10 @@ param modelName string = 'gpt-4o'
 @description('Model version')
 param modelVersion string = '2024-11-20'
 
+@secure()
+@description('ACR admin password for Container App registry auth')
+param acrPassword string = ''
+
 // ============================================================================
 // Storage Account + skills container
 // ============================================================================
@@ -106,6 +110,8 @@ module containerApp 'modules/container-app.bicep' = {
     location: location
     image: mcpServerImage != '' ? mcpServerImage : '${acr.outputs.loginServer}/skills-mcp:latest'
     acrLoginServer: acr.outputs.loginServer
+    acrName: acr.outputs.name
+    acrPassword: acrPassword
     storageAccountName: storage.outputs.name
     skillsContainerName: skillsContainerName
   }

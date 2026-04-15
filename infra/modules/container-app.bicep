@@ -5,8 +5,13 @@ param appName string
 param location string
 param image string
 param acrLoginServer string
+param acrName string
 param storageAccountName string
 param skillsContainerName string = 'skills'
+
+@secure()
+@description('ACR admin password (pass at deploy time)')
+param acrPassword string = ''
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: '${envName}-logs'
@@ -50,14 +55,14 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
       registries: [
         {
           server: acrLoginServer
-          username: acrLoginServer
+          username: acrName
           passwordSecretRef: 'acr-password'
         }
       ]
       secrets: [
         {
           name: 'acr-password'
-          value: 'PLACEHOLDER_REPLACE_IN_POSTPROVISION'
+          value: acrPassword
         }
       ]
     }
