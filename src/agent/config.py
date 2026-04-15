@@ -6,7 +6,7 @@ import os
 # Format: https://{account}.services.ai.azure.com/api/projects/{project}
 PROJECT_ENDPOINT = os.environ.get(
     "PROJECT_ENDPOINT",
-    "https://s2-oz-ai-projects.services.ai.azure.com/api/projects/s2-oz-ai-proj",
+    "https://ai-account-ykihasoqpqobs.services.ai.azure.com/api/projects/ai-project-foundry-skills-test",
 )
 
 # Model deployment name (must exist in the AI Services account)
