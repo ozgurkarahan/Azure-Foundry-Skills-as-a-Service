@@ -1,6 +1,30 @@
 # Foundry Skills
 
-Runtime-extensible prompt agent on Azure AI Foundry. Skills are markdown files stored in Azure Blob Storage — add a new capability by uploading a `.md` file. Zero redeployment.
+**A Skills-as-a-Service pattern for Azure AI Foundry — extend your AI agent's capabilities at runtime by uploading a markdown file. Zero redeployment.**
+
+## Objective
+
+This project demonstrates a production-ready pattern for building **runtime-extensible AI agents** on Azure AI Foundry. Instead of hard-coding capabilities into your agent, skills are plain `.md` files stored in Azure Blob Storage and loaded on demand through an MCP (Model Context Protocol) server.
+
+**The core idea:** teach your agent new tricks by uploading a markdown file — no code changes, no redeployment, no downtime.
+
+### What You'll Find Here
+
+- **Skills-as-a-Service pattern** — a reusable architecture where agent capabilities live outside the codebase as versioned markdown files
+- **MCP Server** — a FastMCP server (deployed as a Container App behind API Management) that exposes blob storage operations as tools the agent can call
+- **Two-hop discovery** — the agent reads a skill registry to know *what* it can do, then fetches the full skill file to know *how* to do it
+- **End-to-end testing** — keyword-based E2E tests and LLM-as-judge evaluations to validate agent behavior
+- **Infrastructure as Code** — Bicep templates and deployment scripts for the full Azure stack
+
+### Why This Pattern?
+
+| Traditional Agents | Skills-as-a-Service |
+|---|---|
+| Capabilities baked into code | Capabilities stored as markdown files |
+| Redeploy to add features | Upload a `.md` file to add features |
+| Monolithic system prompt | Modular skills loaded on demand |
+| Hard to version/audit | Each skill is a versioned blob |
+| Tight coupling | Loose coupling via MCP |
 
 ## Quick Start
 
