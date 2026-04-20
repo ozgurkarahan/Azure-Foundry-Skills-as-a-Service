@@ -40,11 +40,14 @@ User → Foundry PromptAgent (gpt-4o + MCPTool)
 | `src/mcp_server/blob_client.py` | Azure Blob Storage client |
 | `src/mcp_server/config.py` | MCP server config |
 | `src/agent/create_agent.py` | Create/update PromptAgent with MCPTool |
+| `src/agent/upload_skills.py` | Upload skill .md files to Azure Blob Storage |
 | `src/agent/system_prompt.py` | System prompt (registry table + two-hop instructions) |
 | `src/agent/config.py` | Agent config (endpoint, model, name) |
 | `skills/*.md` | Skill files (registry + individual skills) |
 | `tests/test_e2e.py` | 11 E2E tests (keyword assertions) |
 | `tests/test_eval.py` | 5 LLM-as-judge eval cases (format, hallucination, routing) |
 | `tests/inspect_traces.py` | Inspect file_search/mcp_call traces in responses |
+| `scripts/postprovision.py` | azd post-provision hook: upload skills + create agent |
 | `Dockerfile` | Container image for MCP server |
+| `azure.yaml` | Azure Developer CLI (azd) configuration |
 
